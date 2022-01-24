@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <router-link style=" position: fixed; top: 0" to="/contact">Contact</router-link>
+    <router-link style=" position: fixed; top: 20px" to="/">Home</router-link>
+    
+    <PostsExample v-for="post in posts" :key="post.id" :post="post" />   
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import PostsExample from './components/Posts.vue'
+import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    PostsExample
+  },
+  data(){
+    return {
+      posts: []
+    }
+  },
+  created() {
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+    .then(data => this.posts = data.data)
+    .catch(e => console.log(e))
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 </style>
